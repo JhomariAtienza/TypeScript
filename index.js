@@ -43,3 +43,18 @@ function transformString(input) {
     return transformedChars.join('');
 }
 console.log(transformString("Cat30"));
+//Moving Zeros to End 
+function moveZeros(array) {
+    const nonZeroes = [];
+    let zeroCount = 0;
+    array.forEach(element => {
+        if (element !== 0) {
+            nonZeroes.push(element);
+        }
+        else {
+            zeroCount++;
+        }
+    });
+    return nonZeroes.concat(Array(zeroCount).fill(0));
+}
+console.log(moveZeros([false, 1, 0, 1, 2, 0, 1, 3, "a"]));
