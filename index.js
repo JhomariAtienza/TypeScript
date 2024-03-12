@@ -1,4 +1,52 @@
 "use strict";
+function addEntry() {
+    const cityInput = document.getElementById('addCity');
+    const countryInput = document.getElementById('addCountry');
+    const populationInput = document.getElementById('addPopulation');
+    const city = cityInput.value;
+    const country = countryInput.value;
+    const population = populationInput.value;
+    const entry = { city, country, population };
+    const listItem = document.createElement("li");
+    const textNode = document.createTextNode(`${city}, ${country}, ${population}`);
+    listItem.appendChild(textNode);
+    const myList = document.getElementById("myList");
+    if (myList) {
+        myList.appendChild(listItem);
+    }
+    const entries = JSON.parse(localStorage.getItem('entries') || '[]');
+    entries.push(entry);
+    localStorage.setItem('entries', JSON.stringify(entries));
+}
+function filterEntries() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const entries = JSON.parse(localStorage.getItem('entries') || '[]');
+    const filteredEntries = entries.filter(entry => {
+        return entry.city.toLowerCase().includes(searchInput) || entry.country.toLowerCase().includes(searchInput);
+    });
+    const myList = document.getElementById("myList");
+    if (myList) {
+        myList.innerHTML = '';
+        filteredEntries.forEach(entry => {
+            const listItem = document.createElement("li");
+            const textNode = document.createTextNode(`${entry.city}, ${entry.country}, ${entry.population}`);
+            listItem.appendChild(textNode);
+            myList.appendChild(listItem);
+        });
+    }
+}
+window.onload = function () {
+    const entries = JSON.parse(localStorage.getItem('entries') || '[]');
+    const myList = document.getElementById("myList");
+    if (myList) {
+        entries.forEach(entry => {
+            const listItem = document.createElement("li");
+            const textNode = document.createTextNode(`${entry.city}, ${entry.country}, ${entry.population}`);
+            listItem.appendChild(textNode);
+            myList.appendChild(listItem);
+        });
+    }
+};
 //ISBN
 function validateISBN10(isbn) {
     isbn = isbn.replace(/\s/g, '').replace('X', '10');

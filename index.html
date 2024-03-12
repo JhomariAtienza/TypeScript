@@ -1,3 +1,58 @@
+<input id="addCity">
+<input id="addCountry">
+<input id="addPopulation">
+<button onclick="addEntry()">Add</button>
 
-<script>var exports = {"__esModule": { value: true }}</script>
-<script src="./index.js"></script>
+<input id="searchInput" oninput="filterEntries()" placeholder="Search...">
+
+<div id="myList">
+    List of entries
+</div>
+
+<script>
+    function addEntry() {
+        var city = document.getElementById('addCity').value;
+        var country = document.getElementById('addCountry').value;
+        var population = document.getElementById('addPopulation').value;
+
+        var entry = city + ', ' + country + ', ' + population;
+        var listItem = document.createElement("li");
+        var textNode = document.createTextNode(entry);
+        listItem.appendChild(textNode);
+
+        document.getElementById("myList").appendChild(listItem);
+
+        var entries = JSON.parse(localStorage.getItem('entries') || '[]');
+        entries.push({ city: city, country: country, population: population });
+        localStorage.setItem('entries', JSON.stringify(entries));
+    }
+
+    function filterEntries() {
+        var searchInput = document.getElementById('searchInput').value.toLowerCase();
+        var entries = JSON.parse(localStorage.getItem('entries') || '[]');
+        var filteredEntries = entries.filter(function(entry) {
+            return entry.city.toLowerCase().includes(searchInput) || entry.country.toLowerCase().includes(searchInput);
+        });
+
+        var myList = document.getElementById("myList");
+        myList.innerHTML = ''; 
+        filteredEntries.forEach(function(entry) {
+            var listItem = document.createElement("li");
+            var textNode = document.createTextNode(entry.city + ', ' + entry.country + ', ' + entry.population);
+            listItem.appendChild(textNode);
+            myList.appendChild(listItem);
+        });
+    }
+
+    window.onload = function() {
+        var entries = JSON.parse(localStorage.getItem('entries') || '[]');
+        var myList = document.getElementById("myList");
+        myList.innerHTML = '';
+        entries.forEach(function(entry) {
+            var listItem = document.createElement("li");
+            var textNode = document.createTextNode(entry.city + ', ' + entry.country + ', ' + entry.population);
+            listItem.appendChild(textNode);
+            myList.appendChild(listItem);
+        });
+    };
+</script>
